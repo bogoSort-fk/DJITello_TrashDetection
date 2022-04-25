@@ -74,6 +74,7 @@ def run(
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
+        center_coord=True
 ):
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
@@ -157,11 +158,16 @@ def run(
 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
+                    c1, c2 = (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3]))
+                    center_point = round((c1[0]+c2[0])/2), round((c1[1]+c2[1])/2)
+                    image_with_dots = cv2.circle(im0, center_point, radius=3, color=(0, 0, 255), thickness=-1)
+                    text_coord = cv2.putText(im0,str(center_point),center_point,cv2.FONT_HERSHEY_PLAIN,2,(0,0,255))
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                         line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
                         with open(txt_path + '.txt', 'a') as f:
-                            f.write(('%g ' * len(line)).rstrip() % line + '\n')
+                            #f.write(('%g ' * len(line)).rstrip() % line + '\n')
+                            f.write((str(center_point) + '\n'))
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
