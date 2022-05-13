@@ -4,11 +4,11 @@ from numpy.core.fromnumeric import shape
 import detect as detect
 import numpy as np
 
-txt_path = r'G:\telloDeneme\sonuclar\exp13\labels\d2'
-# detect.run(weights=r'.\weights\modelle_0404\weights\best.pt',
-#            source=r'.\denemeler\d2.jpg', view_img=True,save_txt=True,
-#            save_crop=True,project=r'.\sonuclar',name='exp',
-#            line_thickness=2)
+txt_path = r'G:\telloDeneme\sonuclar\exp15\labels\kkkk'
+detect.run(weights=r'.\weights\modelle_0404\weights\best.pt',
+           source=r'.\denemeler\kkkk.jpg', view_img=True,save_txt=True,
+           save_crop=True,project=r'.\sonuclar',name='exp',
+           line_thickness=2)
 
 with open(txt_path + '.txt', 'r') as f:
     d = f.readlines()

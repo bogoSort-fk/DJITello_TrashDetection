@@ -73,6 +73,7 @@ def getKeyboardInput():
 
     if kc.getKey("z"):
         cv2.imwrite(f'Resources/Images/{time.time()}.jpg', img)
+
         sleep(0.3)
 
     sleep(0.25)
@@ -92,6 +93,9 @@ def drawPoints(map, points):
                 (points[-1][0]+10, points[-1][1]+30), cv2.FONT_HERSHEY_PLAIN,1,
                 (255,0,255), 1)
 
+
+
+
 while True:
 
     vals = getKeyboardInput()
@@ -104,9 +108,11 @@ while True:
         points.append((vals[4], vals[5]))
 
     drawPoints(map, points)
-    cv2.imshow("Map" , map)
-    #img = me.get_frame_read().frame
-    #img = cv2.resize(img, (416, 416))
+    if(kc.getKey("z")):
+        pointOfCamPerspective = points[-1][0], points[-1][1]
+    #cv2.imshow("Map" , map)
+    img = me.get_frame_read().frame
+    img = cv2.resize(img, (416, 416))
     # 360,240
-    #cv2.imshow("Image", img)
+    cv2.imshow("Image", img)
     cv2.waitKey(1)
