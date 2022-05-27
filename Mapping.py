@@ -6,13 +6,13 @@ import numpy as np
 import cv2
 import math
 
-fSpeed      = 117/10
-aSpeed      = 360/10
-interval    = 0.25
-a           = 0
+fSpeed      = 11.7                  # Forward Speed in cm/s
+aSpeed      = 36                    # Angular Speed in deg/s
+interval    = 0.25                  # Interval to check the drone position for mapping
+a           = 0                     
 yaw         = 0
-dInterval   = fSpeed * interval
-aInterval   = aSpeed * interval
+dInterval   = fSpeed * interval     # Distance change per unit time
+aInterval   = aSpeed * interval     # Angle change per unit time
 x           = 500
 y           = 500
 points      = [(0,0), (0,0)]
