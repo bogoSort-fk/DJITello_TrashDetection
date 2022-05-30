@@ -6,51 +6,52 @@ import numpy as np
 import cv2
 import math
 
-fSpeed      = 11.7                  # Forward Speed in cm/s
+fSpeed      = 11.7*3                  # Forward Speed in cm/s
 aSpeed      = 36                    # Angular Speed in deg/s
 interval    = 0.25                  # Interval to check the drone position for mapping
 a           = 0                     
 yaw         = 0
 dInterval   = fSpeed * interval     # Distance change per unit time
 aInterval   = aSpeed * interval     # Angle change per unit time
-x           = 500
-y           = 500
+x           = 213
+y           = 213
 points      = [(0,0), (0,0)]
 global img
 
 kc.init()
 me = tello.Tello()
 me.connect()
+me.streamon()
 print(me.get_battery())
 
 def getKeyboardInput():
     lr, fb, ud, yv = 0, 0, 0, 0
-    speed = 50
+    speed = 45
     aspeed = 50
     global x, y, yaw, a
 
     d = 0
 
     if kc.getKey("LEFT"):
-        print(f"left {-speed}")
+
         lr  = -speed
         d   = dInterval
         a   = -180
 
     elif kc.getKey("RIGHT"):
-        print(f"right {speed}")
+
         lr  = speed
         d   = -dInterval
         a   = 180
 
     if kc.getKey("UP"):
-        print(f"up {speed}")
+
         fb = speed
         d = dInterval
         a = 270
 
     elif kc.getKey("DOWN"):
-        print(f"down {-speed}")
+
         fb = -speed
         d = -dInterval
         a = -90
@@ -69,14 +70,11 @@ def getKeyboardInput():
         yaw += aInterval
 
     if kc.getKey("q"):   me.land()  ; sleep(1)
-    if kc.getKey("e"):   me.takeoff()  ; sleep(1)
+    if kc.getKey("e"):   me.takeoff()
 
     if kc.getKey("z"):
         cv2.imwrite(f'Resources/Images/{time.time()}.jpg', img)
 
-        sleep(0.3)
-
-    sleep(0.25)
     a += yaw
     x += int(d*math.cos(math.radians(a)))
     y += int(d * math.sin(math.radians(a)))
@@ -103,16 +101,17 @@ while True:
     print(vals)
     me.send_rc_control(vals[0], vals[1], vals[2], vals[3])
 
-    map = np.zeros((1000,1000,3), np.uint8)
+    map = np.zeros((416,416,3), np.uint8)
     if(points[-1][0] != vals[4] or points[-1][1] != vals[5]):
         points.append((vals[4], vals[5]))
 
     drawPoints(map, points)
-    if(kc.getKey("z")):
-        pointOfCamPerspective = points[-1][0], points[-1][1]
-    #cv2.imshow("Map" , map)
+    # if(kc.getKey("z")):
+    #     pointOfCamPerspective = points[-1][0], points[-1][1]
+    # cv2.imshow("Map" , map)
     img = me.get_frame_read().frame
-    img = cv2.resize(img, (416, 416))
+    me.set_video_direction(0)
+    img = cv2.resize(img, (320, 240))
     # 360,240
     cv2.imshow("Image", img)
     cv2.waitKey(1)

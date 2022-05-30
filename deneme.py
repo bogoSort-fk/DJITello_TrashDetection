@@ -4,8 +4,10 @@ from numpy.core.fromnumeric import shape
 import detect as detect
 import numpy as np
 
-#txt_path = r'G:\telloDeneme\sonuclar\exp11\labels\1'
-txt_path = r'C:\Users\z004hmrm\Documents\okul\tez\DJITello_TrashDetection_RouteMapping\DJITello_TrashDetection\sonuclar\exp13\labels\1'
+# centimeters = pixels * 2.54 / 96
+
+txt_path = r'G:\telloDeneme\sonuclar\exp19\labels\1'
+#txt_path = r'C:\Users\z004hmrm\Documents\okul\tez\DJITello_TrashDetection_RouteMapping\DJITello_TrashDetection\sonuclar\exp13\labels\1'
 detect.run(weights=r'.\weights\modelle_1705\weights\best.pt',
            source=r'.\denemeler', view_img=True,save_txt=True,
            save_crop=True,project=r'.\sonuclar',name='exp',
@@ -38,7 +40,7 @@ for i in range(0, len(intList)):
         intList[i][j] = int(intList[i][j])
 print(intList)
 
-img = cv.imread(r'.\denemeler\1.png')
+img = cv.imread(r'.\denemeler\1.jpg')
 dimensions = img.shape
 cv.imshow('fafdsg',img)
 blank_image = 255*np.ones(shape=dimensions,dtype=np.uint8)
